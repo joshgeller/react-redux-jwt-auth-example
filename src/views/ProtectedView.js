@@ -6,7 +6,7 @@ export default class ProtectedView extends React.Component {
 
     return (
       <div>
-        <h1>Welcome back, {this.props.isAuthenticated}!</h1>
+        <h1>Welcome back, {this.props.token}!</h1>
     </div>
     );
   }

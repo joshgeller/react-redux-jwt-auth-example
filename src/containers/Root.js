@@ -10,12 +10,12 @@ export default class Root extends React.Component {
     store : React.PropTypes.object.isRequired,
     debug : React.PropTypes.bool,
     debugExternal : React.PropTypes.bool
-  }
+  };
 
   static defaultProps = {
     debug : false,
     debugExternal : false
-  }
+  };
 
   renderDevTools () {
     if (!this.props.debug) {
@@ -34,7 +34,6 @@ export default class Root extends React.Component {
             <ReduxRouter>
               {routes}
             </ReduxRouter>
-            
           </div>
         </Provider>
       </div>

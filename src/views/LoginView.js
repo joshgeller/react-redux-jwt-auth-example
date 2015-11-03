@@ -7,17 +7,20 @@ import * as actionCreators from 'actions';
 export class LoginView extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
+
+    const redirectRoute = this.props.location.query.next || '/';
+
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      redirectTo: redirectRoute
     };
   }
 
-
   login(e) {
-    e.preventDefault();
-    this.props.actions.loginUser(this.state.email, this.state.password);
+      e.preventDefault();
+      this.props.actions.loginUser(this.state.email, this.state.password, this.state.redirectTo);
   }
 
   render () {
@@ -50,7 +53,7 @@ export class LoginView extends React.Component {
 reactMixin(LoginView.prototype, React.addons.LinkedStateMixin);
 
 const mapStateToProps = (state) => ({
-  isAuthenticating : state.auth.isAuthenticating,
+  isAuthenticating : state.auth.isAuthenticating
 });
 
 const mapDispatchToProps = (dispatch) => ({

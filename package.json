@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "lint": "eslint ./src/**/*.js",
-    "compile": "webpack",
+    "compile": "NODE_ENV=production webpack",
     "start": "npm run dev",
     "dev": "NODE_ENV=development node --harmony bin/webpack-dev-server",
     "dev:nw": "npm run dev -- --nw",
@@ -24,10 +24,14 @@
   "license": "MIT",
   "dependencies": {
     "babel": "^5.8.23",
+    "body-parser": "^1.14.1",
     "dotenv": "^1.2.0",
+    "errorhandler": "^1.4.2",
     "es6-promise": "^3.0.2",
+    "express": "^4.13.3",
     "history": "^1.9.0",
     "isomorphic-fetch": "^2.2.0",
+    "method-override": "^2.3.5",
     "react": "^0.14.0",
     "react-bootstrap": "^0.27.3",
     "react-dom": "^0.14.0",
@@ -37,6 +41,8 @@
     "redux": "^3.0.0",
     "redux-router": "^1.0.0-beta3",
     "redux-thunk": "^1.0.0",
+    "webpack-dev-middleware": "^1.2.0",
+    "webpack-hot-middleware": "^2.4.1",
     "yargs": "^3.18.0"
   },
   "devDependencies": {
