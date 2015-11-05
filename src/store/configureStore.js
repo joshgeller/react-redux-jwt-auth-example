@@ -4,11 +4,14 @@ import routes from '../routes';
 import {reduxReactRouter} from 'redux-router';
 import createHistory from 'history/lib/createBrowserHistory';
 import {applyMiddleware, compose, createStore} from 'redux';
+import createLogger from 'redux-logger';
 
 export default function configureStore(initialState) {
     let createStoreWithMiddleware;
 
-    const middleware = applyMiddleware(thunk);
+    const logger = createLogger();
+
+    const middleware = applyMiddleware(thunk, logger);
 
     createStoreWithMiddleware = compose(
      middleware,

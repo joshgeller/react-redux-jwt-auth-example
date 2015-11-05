@@ -19,12 +19,14 @@ export class LoginView extends React.Component {
   login(e) {
       e.preventDefault();
       this.props.actions.loginUser(this.state.email, this.state.password, this.state.redirectTo);
+      //this.props.actions.loginUserSuccess('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlRlc3QgVXNlciJ9.J6n4-v0I85zk9MkxBHroZ9ZPZEES-IKeul9ozxYnoZ8')Z;
   }
 
   render () {
     return (
       <div className='col-xs-12 col-md-6 col-md-offset-3'>
         <h3>Log in to view protected content!</h3>
+        <p>Hint: hello@test.com / test</p>
         {this.props.statusText ? <div className='alert alert-info'>{this.props.statusText}</div> : ''}
         <form role='form'>
         <div className='form-group'>

@@ -20,6 +20,8 @@ export function createReducer(initialState, reducerMap) {
 }
 
 export function checkHttpStatus(response) {
+ console.log('Parsing status in response: ')
+ console.dir(response)
     if (response.status >= 200 && response.status < 300) {
         return response
     } else {
@@ -30,5 +32,9 @@ export function checkHttpStatus(response) {
 }
 
 export function parseJSON(response) {
-    return response.json()
+     console.log('Parsing JSON in response: ')
+     console.log(response)
+     return response.json()
+
+
 }

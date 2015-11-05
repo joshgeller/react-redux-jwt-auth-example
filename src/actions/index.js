@@ -1,5 +1,5 @@
 import { checkHttpStatus, parseJSON } from 'utils';
-import { LOGIN_USER_REQUEST, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT_USER } from 'constants';
+import {LOGIN_USER_REQUEST, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT_USER, FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA} from 'constants';
 import { pushState } from 'redux-router';
 
 export function loginUserSuccess(token) {
@@ -33,7 +33,6 @@ export function logout() {
     }
 }
 
-
 export function logoutAndRedirect() {
 
     return (dispatch, state) => {
@@ -45,30 +44,81 @@ export function logoutAndRedirect() {
 
 export function loginUser(email, password, redirect) {
 
-  return function(dispatch) {
+    return function(dispatch) {
 
-    dispatch(loginUserRequest());
+        dispatch(loginUserRequest());
 
-     return fetch(`http://localhost:3000/auth/getToken/`, {
-         method: 'post',
-         credentials: 'include',
-         headers: {
-           'Accept': 'application/json',
-           'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({
-           email: email,
-           password: password
-         })
-       })
-       .then(checkHttpStatus)
-       .then(parseJSON)
-       .then(response => {
-         dispatch(loginUserSuccess(response.token));
-         dispatch(pushState(null, redirect));
-       })
-       .catch(error => {dispatch(loginUserFailure(error))})
+        return fetch(`http://localhost:3000/auth/getToken/`, {
+            method: 'post',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+                body: JSON.stringify({email: email, password: password})
+            }).then(checkHttpStatus)
+            .then(parseJSON)
+            .then(response => {
+                dispatch(loginUserSuccess(response.token));
+                dispatch(pushState(null, redirect));
+            })
+            .catch(error => {
+                dispatch(loginUserFailure(error))
+            })
+    }
+}
 
+export function receiveProtectedData(data) {
+    return {
+        type: RECEIVE_PROTECTED_DATA,
+        payload: {
+            data: data
+        }
+    }
+}
 
+export function fetchProtectedDataRequest() {
+  return {
+    type: FETCH_PROTECTED_DATA_REQUEST
   }
+}
+
+export function fetchProtectedData(token) {
+
+    return function(dispatch) {
+
+        dispatch(fetchProtectedDataRequest());
+
+        return fetch(`http://localhost:3000/getData/`, {
+                credentials: 'include',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(checkHttpStatus)
+            .catch(error => {
+                if(error.response.status === 401) {
+                  dispatch(loginUserFailure(error))
+                  dispatch(pushState(null, '/login'));
+                }
+            })
+            .then(parseJSON)
+            .catch(error => {
+                console.log('Caught parse error:');
+            })
+            .then(response => {
+             console.log('dispatch response: ')
+             console.log(response.data);
+                dispatch(receiveProtectedData(response.data));
+            })
+            .catch(error => {
+                console.log('Fatal error: ')
+                console.log(error);
+            })
+
+        // setTimeout(() => {
+        //     dispatch(receiveProtectedData('Wow, you tha man!'));
+        // }, 2000)
+
+       }
 }
