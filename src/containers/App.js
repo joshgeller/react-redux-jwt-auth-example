@@ -1,6 +1,6 @@
 import React from 'react';
 import {Navbar, NavBrand, Nav, NavItem} from 'react-bootstrap';
-import {Link} from 'react-router'
+import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {logoutUser} from 'actions';
@@ -21,7 +21,12 @@ export default class CoreLayout extends React.Component {
                 <nav className="navbar navbar-default">
                     <div className="container">
                         <div className="navbar-header">
-                            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <button type="button"
+                             className="navbar-toggle collapsed"
+                             data-toggle="collapse"
+                             data-target="#navbar" 
+                             aria-expanded="false"
+                             aria-controls="navbar">
                                 <span className="sr-only">Toggle navigation</span>
                                 <span className="icon-bar"></span>
                                 <span className="icon-bar"></span>

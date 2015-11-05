@@ -6,10 +6,10 @@ import configureStore from './store/configureStore';
 import {loginUserSuccess} from 'actions';
 
 const target = document.getElementById('root');
-const store = configureStore(window.__INITIAL_STATE__, __DEBUG__);
+const store = configureStore(window.__INITIAL_STATE__);
 
 const node = (
-    <Root store={store} debug={__DEBUG__} debugExternal={__DEBUG_NW__}/>
+    <Root store={store} />
 );
 
 let token = localStorage.getItem('token');

@@ -12,7 +12,7 @@ export default createReducer(initialState, {
     [LOGIN_USER_REQUEST]: (state, payload) => {
         return Object.assign({}, state, {
             'isAuthenticating': true
-        })
+        });
     },
     [LOGIN_USER_SUCCESS]: (state, payload) => {
         localStorage.setItem('token', payload.token);
@@ -20,14 +20,14 @@ export default createReducer(initialState, {
             'isAuthenticating': false,
             'isAuthenticated': true,
             'token': payload.token
-        })
+        });
     },
     [LOGIN_USER_FAILURE]: (state, payload) => {
         return Object.assign({}, state, {
             'isAuthenticating': false,
             'isAuthenticated': false,
             'token': null
-        })
+        });
     },
     [LOGOUT_USER]: (state, payload) => {
         localStorage.removeItem('token');
@@ -35,6 +35,6 @@ export default createReducer(initialState, {
             'isAuthenticating': false,
             'isAuthenticated': false,
             'token': null
-        })
+        });
     }
 });
