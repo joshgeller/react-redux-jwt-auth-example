@@ -3,12 +3,14 @@ import {Navbar, NavBrand, Nav, NavItem} from 'react-bootstrap';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {logoutUser} from 'actions';
+import {logoutAndRedirect} from 'actions';
 
 import 'styles/core.scss';
 
 @connect((state) => {
-    return {isAuthenticated: state.auth.isAuthenticated};
+    return {
+     isAuthenticated: state.auth.isAuthenticated
+    };
 })
 export default class CoreLayout extends React.Component {
 
@@ -24,7 +26,7 @@ export default class CoreLayout extends React.Component {
                             <button type="button"
                              className="navbar-toggle collapsed"
                              data-toggle="collapse"
-                             data-target="#navbar" 
+                             data-target="#navbar"
                              aria-expanded="false"
                              aria-controls="navbar">
                                 <span className="sr-only">Toggle navigation</span>
@@ -42,10 +44,12 @@ export default class CoreLayout extends React.Component {
                                 <li>
                                     <Link to="/login">Login</Link>
                                 </li>
-                                <li>
-                                    <a href='#' onClick={() => this.props
-                                        .dispatch(logoutUser())}>Logout</a>
-                                </li>
+                                {this.props.isAuthenticated
+                                 ? <li>
+                                     <a href='#' onClick={() => this.props.dispatch(logoutAndRedirect())}>Logout</a>
+                                   </li>
+                                 : ''
+                                }
                             </ul>
                         </div>
                     </div>

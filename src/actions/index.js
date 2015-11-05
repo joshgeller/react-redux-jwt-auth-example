@@ -11,12 +11,12 @@ export function loginUserSuccess(token) {
   }
 }
 
-export function loginUserFailure(err) {
-    console.log(err);
+export function loginUserFailure(error) {
   return {
     type: LOGIN_USER_FAILURE,
     payload: {
-      err: err
+      status: error.response.status,
+      statusText: error.response.statusText
     }
   }
 }
@@ -28,14 +28,13 @@ export function loginUserRequest() {
 }
 
 export function logout() {
-    console.log('logout');
     return {
         type: LOGOUT_USER
     }
 }
 
 
-export function logoutUser() {
+export function logoutAndRedirect() {
 
     return (dispatch, state) => {
         dispatch(logout());
@@ -68,7 +67,7 @@ export function loginUser(email, password, redirect) {
          dispatch(loginUserSuccess(response.token));
          dispatch(pushState(null, redirect));
        })
-       .catch(err => dispatch(loginUserFailure(err)))
+       .catch(error => {dispatch(loginUserFailure(error))})
 
 
   }

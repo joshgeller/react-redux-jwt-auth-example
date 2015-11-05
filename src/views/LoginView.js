@@ -8,9 +8,7 @@ export class LoginView extends React.Component {
 
   constructor(props) {
     super(props);
-
-    const redirectRoute = this.props.location.query.next || '/';
-
+    const redirectRoute = this.props.location.query.next || '/login';
     this.state = {
       email: '',
       password: '',
@@ -27,6 +25,7 @@ export class LoginView extends React.Component {
     return (
       <div className='col-xs-12 col-md-6 col-md-offset-3'>
         <h3>Log in to view protected content!</h3>
+        {this.props.statusText ? <div className='alert alert-info'>{this.props.statusText}</div> : ''}
         <form role='form'>
         <div className='form-group'>
             <input type='text'
@@ -53,7 +52,8 @@ export class LoginView extends React.Component {
 reactMixin(LoginView.prototype, React.addons.LinkedStateMixin);
 
 const mapStateToProps = (state) => ({
-  isAuthenticating : state.auth.isAuthenticating
+  isAuthenticating   : state.auth.isAuthenticating,
+  statusText         : state.auth.statusText
 });
 
 const mapDispatchToProps = (dispatch) => ({

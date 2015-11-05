@@ -5,13 +5,15 @@ import {pushState} from 'redux-router';
 const initialState = {
     token: null,
     isAuthenticated: false,
-    isAuthenticating: false
+    isAuthenticating: false,
+    statusText: null
 };
 
 export default createReducer(initialState, {
     [LOGIN_USER_REQUEST]: (state, payload) => {
         return Object.assign({}, state, {
-            'isAuthenticating': true
+            'isAuthenticating': true,
+            'statusText': null
         });
     },
     [LOGIN_USER_SUCCESS]: (state, payload) => {
@@ -19,14 +21,16 @@ export default createReducer(initialState, {
         return Object.assign({}, state, {
             'isAuthenticating': false,
             'isAuthenticated': true,
-            'token': payload.token
+            'token': payload.token,
+            'statusText': `You have been successfully signed in as ${payload.token}.`,
         });
     },
     [LOGIN_USER_FAILURE]: (state, payload) => {
         return Object.assign({}, state, {
             'isAuthenticating': false,
             'isAuthenticated': false,
-            'token': null
+            'token': null,
+            'statusText': `Authentication Error: ${payload.status} ${payload.statusText}`
         });
     },
     [LOGOUT_USER]: (state, payload) => {
@@ -34,7 +38,8 @@ export default createReducer(initialState, {
         return Object.assign({}, state, {
             'isAuthenticating': false,
             'isAuthenticated': false,
-            'token': null
+            'token': null,
+            'statusText': 'You have been successfully logged out.'
         });
     }
 });
