@@ -36,7 +36,7 @@ export default createReducer(initialState, {
                 'isAuthenticated': false,
                 'token': null,
                 'userName': null,
-                'statusText': `Authentication Error: ${payload.status} ${payload.statusText}`
+                'statusText': `Invalid access token. Please log in again.`
             });
         }
     },

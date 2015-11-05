@@ -34,20 +34,16 @@ export function logout() {
 }
 
 export function logoutAndRedirect() {
-
     return (dispatch, state) => {
         dispatch(logout());
         dispatch(pushState(null, '/login'));
     }
-
 }
 
 export function loginUser(email, password, redirect) {
 
     return function(dispatch) {
-
         dispatch(loginUserRequest());
-
         return fetch(`http://localhost:3000/auth/getToken/`, {
             method: 'post',
             credentials: 'include',
@@ -86,9 +82,7 @@ export function fetchProtectedDataRequest() {
 export function fetchProtectedData(token) {
 
     return function(dispatch) {
-
         dispatch(fetchProtectedDataRequest());
-
         return fetch(`http://localhost:3000/getData/`, {
                 credentials: 'include',
                 headers: {
@@ -103,22 +97,11 @@ export function fetchProtectedData(token) {
                 }
             })
             .then(parseJSON)
-            .catch(error => {
-                console.log('Caught parse error:');
-            })
             .then(response => {
-             console.log('dispatch response: ')
-             console.log(response.data);
                 dispatch(receiveProtectedData(response.data));
             })
             .catch(error => {
-                console.log('Fatal error: ')
-                console.log(error);
+                console.log('Error processing request.');
             })
-
-        // setTimeout(() => {
-        //     dispatch(receiveProtectedData('Wow, you tha man!'));
-        // }, 2000)
-
        }
 }
