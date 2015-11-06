@@ -1,5 +1,5 @@
-import { checkHttpStatus, parseJSON } from 'utils';
-import {LOGIN_USER_REQUEST, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT_USER, FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA} from 'constants';
+import { checkHttpStatus, parseJSON } from '../utils';
+import {LOGIN_USER_REQUEST, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT_USER, FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA} from '../constants';
 import { pushState } from 'redux-router';
 
 export function loginUserSuccess(token) {
@@ -44,7 +44,7 @@ export function loginUser(email, password, redirect) {
 
     return function(dispatch) {
         dispatch(loginUserRequest());
-        return fetch(`http://localhost:3000/auth/getToken/`, {
+        return fetch('http://localhost:3000/auth/getToken/', {
             method: 'post',
             credentials: 'include',
             headers: {
@@ -83,7 +83,7 @@ export function fetchProtectedData(token) {
 
     return function(dispatch) {
         dispatch(fetchProtectedDataRequest());
-        return fetch(`http://localhost:3000/getData/`, {
+        return fetch('http://localhost:3000/getData/', {
                 credentials: 'include',
                 headers: {
                     'Authorization': `Bearer ${token}`

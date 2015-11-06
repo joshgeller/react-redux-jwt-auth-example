@@ -1,8 +1,8 @@
 import expect from 'expect';
-import {applyMiddleware} from 'redux';
-import thunkMiddleware from 'redux-thunk';
+import { applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
-const middlewares = [thunkMiddleware];
+const middlewares = [ thunk ];
 
 export function mockStore(getState, expectedActions, onLastAction) {
     if (!Array.isArray(expectedActions)) {

@@ -1,5 +1,5 @@
-import {createReducer} from 'utils';
-import {LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE, LOGOUT_USER} from 'constants';
+import {createReducer} from '../utils';
+import {LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE, LOGOUT_USER} from '../constants';
 import {pushState} from 'redux-router';
 import jwtDecode from 'jwt-decode';
 
