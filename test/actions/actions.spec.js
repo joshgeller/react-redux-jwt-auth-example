@@ -10,8 +10,8 @@ import fetch from 'isomorphic-fetch';
 describe('actions', () => {
 
     afterEach(() => {
-  nock.cleanAll()
-})
+        nock.cleanAll()
+    })
 
     it('loginUserSuccess should create LOGIN_USER_SUCCESS action', () => {
         expect(ACTIONS.loginUserSuccess('token')).toEqual({
@@ -81,11 +81,13 @@ describe('actions', () => {
         const expectedActions = [
             {
                 type: TYPES.FETCH_PROTECTED_DATA_REQUEST
-            },
-            {
-                type: TYPES.LOGOUT_USER
-            },
-            {
+            }, {
+                type: TYPES.LOGIN_USER_FAILURE,
+                payload: {
+                    status: 401,
+                    statusText: 'Unauthorized'
+                }
+            }, {
                 type: '@@reduxReactRouter/historyAPI',
                 payload: {
                     method: 'pushState',
@@ -100,9 +102,84 @@ describe('actions', () => {
              .get('/getData/')
              .reply(401)
 
-        const store = mockStore({}, expectedActions);
+        const store = mockStore({}, expectedActions, done);
         store.dispatch(ACTIONS.fetchProtectedData('token'));
-        done();
+
+    })
+
+    it('fetchProtectedDataRequest should create RECEIVE_PROTECTED_DATA actions when API returns 200', (done) => {
+
+        const expectedActions = [
+            {
+                type: TYPES.FETCH_PROTECTED_DATA_REQUEST
+            }, {
+                type: TYPES.RECEIVE_PROTECTED_DATA,
+                payload: {
+                    data: 'data'
+                }
+            }
+        ]
+
+        nock('http://localhost:3000/')
+             .get('/getData/')
+             .reply(200, {data: 'data'})
+
+        const store = mockStore({}, expectedActions, done);
+        store.dispatch(ACTIONS.fetchProtectedData('token'));
+
+    })
+
+    it('loginUser should create LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, and PUSH_STATE actions when API returns 200', (done) => {
+
+        const expectedActions = [
+            {
+                type: TYPES.LOGIN_USER_REQUEST
+            }, {
+                type: TYPES.LOGIN_USER_SUCCESS,
+                payload: {
+                    token: 'token'
+                }
+            }, {
+                type: '@@reduxReactRouter/historyAPI',
+                payload: {
+                    method: 'pushState',
+                    args: [
+                        null, '/'
+                    ]
+                }
+            }
+        ]
+
+        nock('http://localhost:3000/')
+             .post('/auth/getToken/')
+             .reply(200, {token: 'token'})
+
+        const store = mockStore({}, expectedActions, done);
+        store.dispatch(ACTIONS.loginUser());
+
+    })
+
+    it('loginUser should create LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, and PUSH_STATE actions when API returns 401', (done) => {
+
+        const expectedActions = [
+            {
+                type: TYPES.LOGIN_USER_REQUEST
+            }, {
+                type: TYPES.LOGIN_USER_FAILURE,
+                payload: {
+                    status: 401,
+                    statusText: 'Unauthorized'
+                }
+            }
+        ]
+
+        nock('http://localhost:3000/')
+             .post('/auth/getToken/')
+             .reply(401)
+
+        const store = mockStore({}, expectedActions, done);
+        store.dispatch(ACTIONS.loginUser());
+
     })
 
 })

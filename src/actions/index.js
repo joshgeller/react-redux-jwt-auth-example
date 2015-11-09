@@ -52,14 +52,16 @@ export function loginUser(email, password, redirect) {
                 'Content-Type': 'application/json'
             },
                 body: JSON.stringify({email: email, password: password})
-            }).then(checkHttpStatus)
+            })
+            .then(checkHttpStatus)
             .then(parseJSON)
             .then(response => {
+                let redirect = redirect || '/';
                 dispatch(loginUserSuccess(response.token));
                 dispatch(pushState(null, redirect));
             })
             .catch(error => {
-                dispatch(loginUserFailure(error))
+                dispatch(loginUserFailure(error));
             })
     }
 }
@@ -81,7 +83,7 @@ export function fetchProtectedDataRequest() {
 
 export function fetchProtectedData(token) {
 
-    return function(dispatch) {
+    return (dispatch, state) => {
         dispatch(fetchProtectedDataRequest());
         return fetch('http://localhost:3000/getData/', {
                 credentials: 'include',
@@ -90,18 +92,15 @@ export function fetchProtectedData(token) {
                 }
             })
             .then(checkHttpStatus)
-            .catch(error => {
-                if(error.response.status === 401) {
-                  dispatch(loginUserFailure(error))
-                  dispatch(pushState(null, '/login'));
-                }
-            })
             .then(parseJSON)
             .then(response => {
                 dispatch(receiveProtectedData(response.data));
             })
             .catch(error => {
-                console.log('Error processing request.');
+                if(error.response.status === 401) {
+                  dispatch(loginUserFailure(error));
+                  dispatch(pushState(null, '/login'));
+                }
             })
        }
 }
