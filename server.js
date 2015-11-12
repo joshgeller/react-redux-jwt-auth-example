@@ -17,7 +17,6 @@ app.use(webpackHotMiddleware(compiler));
 app.use(bodyParser.json());
 
 app.post("/auth/getToken/", function(req, res) {
- console.log('auth token requested');
     if (req.body.email == 'hello@test.com' && req.body.password == 'test') {
         res.status(200)
             .json({token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlRlc3QgVXNlciJ9.J6n4-v0I85zk9MkxBHroZ9ZPZEES-IKeul9ozxYnoZ8'})
@@ -28,16 +27,12 @@ app.post("/auth/getToken/", function(req, res) {
 });
 app
     .get("/getData/", function(req, res) {
-        console.log(req.headers);
         var token = req.headers['authorization'];
         if (!token) {
-            console.log("No token");
             res.sendStatus(401);
         } else {
             try {
                 var decoded = jwt.verify(token.replace('Bearer ', ''), 'secret-key');
-                console.log("Decoded token: ");
-                console.log(decoded);
                 res.status(200)
                     .json({data: 'Valid JWT found! This protected data was fetched from the server.'})
             } catch (e) {
