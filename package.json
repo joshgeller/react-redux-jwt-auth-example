@@ -4,20 +4,12 @@
   "description": "Authentication with React, Redux, and JWT!",
   "main": "index.js",
   "scripts": {
-    "clean": "rm -rf dist",
-    "lint": "eslint ./src/**/*.js",
     "compile": "NODE_ENV=production webpack",
     "start": "npm run dev",
     "dev": "NODE_ENV=development node --harmony bin/webpack-dev-server",
-    "dev:nw": "npm run dev -- --nw",
-    "dev:no-debug": "npm run dev -- --no_debug",
     "mocha": "mocha --recursive --compilers js:babel-core/register",
     "mocha:watch": "npm run mocha -- --watch",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive --compilers js:babel/register --colors --reporter dot test/",
-    "test": "node ./node_modules/karma/bin/karma start --require ./test/setup.js",
-    "test:dev": "NODE_ENV=development npm run test -- --watch --require ./test/setup.js",
-    "test:lint": "eslint ./tests/**/*.spec.js --require ./test/setup.js",
-    "deploy": "npm run lint && npm run test && npm run compile"
   },
   "repository": {
     "type": "git",
