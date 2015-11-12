@@ -9,7 +9,7 @@
     "dev": "NODE_ENV=development node --harmony bin/webpack-dev-server",
     "mocha": "mocha --recursive --compilers js:babel-core/register",
     "mocha:watch": "npm run mocha -- --watch",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive --compilers js:babel/register --colors --reporter dot test/",
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive --compilers js:babel/register --colors --reporter dot test/"
   },
   "repository": {
     "type": "git",
