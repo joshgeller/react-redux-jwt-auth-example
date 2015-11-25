@@ -1,8 +1,10 @@
 import { checkHttpStatus, parseJSON } from '../utils';
 import {LOGIN_USER_REQUEST, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT_USER, FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA} from '../constants';
 import { pushState } from 'redux-router';
+import jwtDecode from 'jwt-decode';
 
 export function loginUserSuccess(token) {
+  localStorage.setItem('token', token);
   return {
     type: LOGIN_USER_SUCCESS,
     payload: {
@@ -12,6 +14,7 @@ export function loginUserSuccess(token) {
 }
 
 export function loginUserFailure(error) {
+  localStorage.removeItem('token');
   return {
     type: LOGIN_USER_FAILURE,
     payload: {
@@ -28,6 +31,7 @@ export function loginUserRequest() {
 }
 
 export function logout() {
+    localStorage.removeItem('token');
     return {
         type: LOGOUT_USER
     }
@@ -41,7 +45,6 @@ export function logoutAndRedirect() {
 }
 
 export function loginUser(email, password, redirect) {
-
     return function(dispatch) {
         dispatch(loginUserRequest());
         return fetch('http://localhost:3000/auth/getToken/', {
@@ -56,9 +59,18 @@ export function loginUser(email, password, redirect) {
             .then(checkHttpStatus)
             .then(parseJSON)
             .then(response => {
-                let redirect = redirect || '/';
-                dispatch(loginUserSuccess(response.token));
-                dispatch(pushState(null, redirect));
+                try {
+                    let decoded = jwtDecode(response.token);
+                    dispatch(loginUserSuccess(response.token));
+                    dispatch(pushState(null, redirect));
+                } catch (e) {
+                    dispatch(loginUserFailure({
+                        response: {
+                            status: 403,
+                            statusText: 'Invalid token'
+                        }
+                    }));
+                }
             })
             .catch(error => {
                 dispatch(loginUserFailure(error));

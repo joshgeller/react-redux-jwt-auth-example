@@ -19,29 +19,16 @@ export default createReducer(initialState, {
         });
     },
     [LOGIN_USER_SUCCESS]: (state, payload) => {
-        localStorage.setItem('token', payload.token);
-        try {
-            let decoded = jwtDecode(payload.token);
-            return Object.assign({}, state, {
-                'isAuthenticating': false,
-                'isAuthenticated': true,
-                'token': payload.token,
-                'userName': decoded.userName,
-                'statusText': `You have been successfully signed in as ${decoded.userName}.`
-            });
-        } catch (e) {
-            localStorage.removeItem('token');
-            return Object.assign({}, state, {
-                'isAuthenticating': false,
-                'isAuthenticated': false,
-                'token': null,
-                'userName': null,
-                'statusText': `Invalid access token. Please log in again.`
-            });
-        }
+        return Object.assign({}, state, {
+            'isAuthenticating': false,
+            'isAuthenticated': true,
+            'token': payload.token,
+            'userName': jwtDecode(payload.token).userName,
+            'statusText': 'You have been successfully logged in.'
+        });
+
     },
     [LOGIN_USER_FAILURE]: (state, payload) => {
-        localStorage.removeItem('token');
         return Object.assign({}, state, {
             'isAuthenticating': false,
             'isAuthenticated': false,
@@ -51,7 +38,6 @@ export default createReducer(initialState, {
         });
     },
     [LOGOUT_USER]: (state, payload) => {
-        localStorage.removeItem('token');
         return Object.assign({}, state, {
             'isAuthenticated': false,
             'token': null,

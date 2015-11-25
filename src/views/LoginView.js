@@ -19,7 +19,6 @@ export class LoginView extends React.Component {
   login(e) {
       e.preventDefault();
       this.props.actions.loginUser(this.state.email, this.state.password, this.state.redirectTo);
-      //this.props.actions.loginUserSuccess('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlRlc3QgVXNlciJ9.J6n4-v0I85zk9MkxBHroZ9ZPZEES-IKeul9ozxYnoZ8')Z;
   }
 
   render () {
