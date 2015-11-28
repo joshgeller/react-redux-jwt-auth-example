@@ -159,7 +159,7 @@ describe('actions', () => {
 
     })
 
-    it('loginUser should create LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, and PUSH_STATE actions when API returns 401', (done) => {
+    it('loginUser should create LOGIN_USER_REQUEST and LOGIN_USER_FAILURE actions when API returns 401', (done) => {
 
         const expectedActions = [
             {
