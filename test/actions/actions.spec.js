@@ -7,13 +7,44 @@ import {mockStore} from '../mockStore';
 import nock from 'nock';
 import fetch from 'isomorphic-fetch';
 
-describe('actions', () => {
+(function (glob) {
+    function mockStorage() {
+        var storage = {};
+        return {
+            setItem: function(key, value) {
+                storage[key] = value || '';
+            },
+            getItem: function(key) {
+                return storage[key];
+            },
+            removeItem: function(key) {
+                delete storage[key];
+            },
+            get length () {
+                return Object.keys(storage).length;
+            },
+            key: function(i) {
+                var keys = Object.keys(storage);
+                return keys[i] || null;
+            }
+        };
+    }
+    glob.localStorage = mockStorage();
+    glob.sessionStorage = mockStorage();
+}(typeof window !== 'undefined' ? window : global));
+
+describe('actions:', () => {
 
     afterEach(() => {
-        nock.cleanAll()
+        nock.cleanAll();
+    })
+
+    beforeEach(() => {
+        localStorage.removeItem('token');
     })
 
     it('loginUserSuccess should create LOGIN_USER_SUCCESS action', () => {
+
         expect(ACTIONS.loginUserSuccess('token')).toEqual({
             type: TYPES.LOGIN_USER_SUCCESS, payload: {
                 token: 'token'
@@ -131,13 +162,15 @@ describe('actions', () => {
 
     it('loginUser should create LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, and PUSH_STATE actions when API returns 200', (done) => {
 
+        let redirect = '/';
+        
         const expectedActions = [
             {
                 type: TYPES.LOGIN_USER_REQUEST
             }, {
                 type: TYPES.LOGIN_USER_SUCCESS,
                 payload: {
-                    token: 'token'
+                    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlRlc3QgVXNlciJ9.J6n4-v0I85zk9MkxBHroZ9ZPZEES-IKeul9ozxYnoZ8'
                 }
             }, {
                 type: '@@reduxReactRouter/historyAPI',
@@ -152,7 +185,7 @@ describe('actions', () => {
 
         nock('http://localhost:3000/')
              .post('/auth/getToken/')
-             .reply(200, {token: 'token'})
+             .reply(200, {token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlRlc3QgVXNlciJ9.J6n4-v0I85zk9MkxBHroZ9ZPZEES-IKeul9ozxYnoZ8'})
 
         const store = mockStore({}, expectedActions, done);
         store.dispatch(ACTIONS.loginUser());

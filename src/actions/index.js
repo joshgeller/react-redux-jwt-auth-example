@@ -44,7 +44,7 @@ export function logoutAndRedirect() {
     }
 }
 
-export function loginUser(email, password, redirect) {
+export function loginUser(email, password, redirect="/") {
     return function(dispatch) {
         dispatch(loginUserRequest());
         return fetch('http://localhost:3000/auth/getToken/', {
