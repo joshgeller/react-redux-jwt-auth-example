@@ -1,7 +1,5 @@
 import {createReducer} from '../utils';
 import {RECEIVE_PROTECTED_DATA, FETCH_PROTECTED_DATA_REQUEST} from '../constants';
-import {pushState} from 'redux-router';
-import jwtDecode from 'jwt-decode';
 
 const initialState = {
     data: null,
