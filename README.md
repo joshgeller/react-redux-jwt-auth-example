@@ -104,3 +104,9 @@ export default(
 ```
 
 When we call `requireAuthentication(ProtectedView)`, we create an instance of `AuthenticatedComponent` and pass along our `ProtectedView` as an argument. `AuthenticatedComponent` connects to the Redux store, subscribing to the appropriate authentication state variables. It then handles authentication logic in its lifecycle methods to ensure that the protected component is not rendered if the store does not indicate successful authentication.
+
+---
+
+### redux-auth-wrapper
+
+The [redux-auth-wrapper](https://github.com/mjrussell/redux-auth-wrapper) library uses this higher-order component approach to deliver a comprehensive authentication/authorization solution for those looking for something a bit more polished than this demonstration.
