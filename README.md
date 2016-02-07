@@ -39,8 +39,8 @@ Taking a look at the code should make this more clear!
 ### How It Works
 
 This example uses [redux-auth-wrapper](https://github.com/mjrussell/redux-auth-wrapper) to provide a higher-order component
-to check for authentication. The config options are passed in `utils/index.js` which then exports a function which returns
-the higher-order component. The function takes a single argument: a child component it will wrap.
+to check for authentication. The config options are passed to the library in `utils/index.js` which then exports a function to create
+the authentication-protected component. The function takes a single argument: a child component it will wrap.
 
 
 ```javascript
