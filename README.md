@@ -38,61 +38,34 @@ Taking a look at the code should make this more clear!
 
 ### How It Works
 
-The higher-order component that does the heavy lifting is in `components/AuthenticatedComponent`. Notice that we are exporting a function which returns the higher-order component. The function takes a single argument: a child component it will wrap.
+This example uses [redux-auth-wrapper](https://github.com/mjrussell/redux-auth-wrapper) to provide a higher-order component
+to check for authentication. The config options are passed to the library in `utils/index.js` which then exports a function to create
+the authentication-protected component. The function takes a single argument: a child component it will wrap.
 
 
 ```javascript
-import React from 'react';
-import {connect} from 'react-redux';
-import {pushState} from 'redux-router';
+import { UserAuthWrapper } from 'redux-auth-wrapper'
+import { pushState } from 'redux-router';
 
-export function requireAuthentication(Component) {
-
-    class AuthenticatedComponent extends React.Component {
-
-        componentWillMount() {
-            this.checkAuth();
-        }
-
-        componentWillReceiveProps(nextProps) {
-            this.checkAuth();
-        }
-
-        checkAuth() {
-            if (!this.props.isAuthenticated) {
-                let redirectAfterLogin = this.props.location.pathname;
-                this.props.dispatch(pushState(null, `/login?next=${redirectAfterLogin}`));
-            }
-        }
-
-        render() {
-            return (
-                <div>
-                    {this.props.isAuthenticated === true
-                        ? <Component {...this.props}/>
-                        : null
-                    }
-                </div>
-            )
-
-        }
+export const requireAuthentication = UserAuthWrapper({
+  authSelector: state => state.auth,
+  predicate: auth => auth.isAuthenticated,
+  // convert history location descriptor from 2.0 to 1.0
+  redirectAction: ({ pathname, query }) => {
+    if (query.redirect) {
+      return pushState(null, `${pathname}?next=${query.redirect}`)
+    } else {
+      return pushState(null, pathname)
     }
-
-    const mapStateToProps = (state) => ({
-        token: state.auth.token,
-        userName: state.auth.userName,
-        isAuthenticated: state.auth.isAuthenticated
-    });
-
-    return connect(mapStateToProps)(AuthenticatedComponent);
-
-}
+  },
+  wrapperDisplayName: 'UserIsJWTAuthenticated'
+})
 ```
 A glance at `routes/index.js` shows you how to wrap a view or component using this function:
 
 ```javascript
 import {HomeView, LoginView, ProtectedView} from '../views';
-import {requireAuthentication} from '../components/AuthenticatedComponent';
+import { requireAuthentication } from '../utils';
 
 export default(
     <Route path='/' component={App}>

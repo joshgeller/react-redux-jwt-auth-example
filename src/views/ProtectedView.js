@@ -10,7 +10,7 @@ export class ProtectedView extends React.Component {
     }
 
     fetchData () {
-        let token = this.props.token;
+        let token = this.props.authData.token;
         this.props.actions.fetchProtectedData(token);
     }
 
@@ -21,7 +21,7 @@ export class ProtectedView extends React.Component {
                     ? <h1>Loading data...</h1>
                     : <div>
                         <h1>Welcome back,
-                            {this.props.userName}!</h1>
+                            {this.props.authData.userName}!</h1>
                         <h3>{this.props.data}</h3>
                     </div>
     }
