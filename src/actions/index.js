@@ -73,6 +73,12 @@ export function loginUser(email, password, redirect="/") {
                 }
             })
             .catch(error => {
+                if (error.response === undefined && error.message) {
+                    error.response = {
+                        status: 102,
+                        statusText: error.message
+                    };
+                }
                 dispatch(loginUserFailure(error));
             })
     }
