@@ -5,13 +5,17 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-
 const app = new(require('express'))();
 const port = 3000;
 
 const config = require('./webpack.config');
 const compiler = webpack(config);
 
+const path = require('path');
+//Mongo Interface
+const authenticateEmail = require('./src/constants/mongo/authenticateEmail');
+const registerNewUser = require('./src/constants/mongo/registerNewUser');
+//
 app.use(webpackDevMiddleware(compiler, {
     noInfo: true,
     publicPath: config.output.publicPath
@@ -20,12 +24,28 @@ app.use(webpackHotMiddleware(compiler));
 app.use(bodyParser.json());
 
 app.post('/auth/getToken/', (req, res) => {
-    if (req.body.email == 'hello@test.com' && req.body.password == 'test') {
-        res.status(200)
-            .json({token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlRlc3QgVXNlciJ9.J6n4-v0I85zk9MkxBHroZ9ZPZEES-IKeul9ozxYnoZ8'});
-    } else {
+    authenticateEmail(req.body.email, req.body.password)
+      .then(token => {
+        res
+          .status(200)
+          .json({token});
+      })
+      .catch(error => {
+        console.error('getToken ERR:', error);
         res.sendStatus(403);
-    }
+      });
+});
+app.post('/auth/registerUser', (req, res) => {
+    registerNewUser(req.body)
+      .then(result => {
+        console.info('registerUser Result:', result);
+        res.status(200).json(result)
+      })
+      .catch(err => {
+        console.error('registerUser ERR:', err);
+        // Send 422: Unprocessable Entity for validation error.
+        res.sendStatus(422)
+      });
 });
 
 app.get('/getData/', (req, res) => {
@@ -44,7 +64,7 @@ app.get('/getData/', (req, res) => {
 })
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/dist/index.html');
+    res.sendFile(path.resolve(__dirname, '/dist/index.html'));
 });
 
 app.listen(port, (error) => {
