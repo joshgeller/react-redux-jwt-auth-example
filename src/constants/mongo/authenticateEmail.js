@@ -25,25 +25,22 @@ export default function authenticateEmail(email, password) {
         collection.find({email: email}).limit(1).toArray((err, documents) => {
           if (err) {
             reject('collection.find Error:', err)
-            return;
           } else {
             if (!documents.length) {
               reject('Authentication Error: No user with that email');
-              return;
+            } else {
+              let record = documents[0];
+              checkPassword(password, record.hashedPassword)
+                .then(isGoodPassword => {
+                  const payload = {
+                      userName: record.name
+                  };
+                  const token = jwt.sign(payload, 'secret-key');
+                  return Promise.resolve(token);
+                })
+                .then(resolve)
+                .catch(partial(reject, 'Authentication Error: Invalid Password'));
             }
-            let record = documents[0];
-            console.info('Got Record:', record);
-            // [[ {{ Add bcrypt }} ]]
-            checkPassword(password, record.hashedPassword)
-              .then(userName => {
-                const payload = {
-                    userName: userName
-                };
-                const token = jwt.sign(payload, 'secret-key');
-                return Promise.resolve(token);
-              })
-              .then(resolve)
-              .catch(partial(reject, 'Authentication Error: Invalid Password'));
           }
         });
       })
