@@ -2,37 +2,47 @@ import React from 'react/addons';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import reactMixin from 'react-mixin';
-import * as actionCreators from '../actions';
+import * as actionCreators from '../actions/register';
 
-export class LoginView extends React.Component {
+class RegisterView extends React.Component {
 
   constructor(props) {
     super(props);
     const redirectRoute = this.props.location.query.next || '/login';
     this.state = {
+      name: '',
       email: '',
       password: '',
-      redirectTo: redirectRoute
     };
   }
 
-  login(e) {
-      e.preventDefault();
-      this.props.actions.loginUser(this.state.email, this.state.password, this.state.redirectTo);
+  register(e) {
+    e.preventDefault();
+    let {name, email, password} = this.state;
+    this.props.actions.registerUser(name, email, password)
   }
 
-  render () {
+  render() {
     return (
       <div className='col-xs-12 col-md-6 col-md-offset-3'>
-        <h3>Log in to view protected content!</h3>
-        <p>Hint: hello@test.com / test</p>
-        {this.props.statusText ? <div className='alert alert-info'>{this.props.statusText}</div> : ''}
+        <h3>Register to create an account!</h3>
+        {this.props.statusText
+          ? <div className='alert alert-info'>{this.props.statusText}</div>
+          : ''}
         <form role='form'>
           <div className='form-group'>
             <input type='text'
               className='form-control input-lg'
+              valueLink={this.linkState('name')}
+              placeholder='Name'
+            />
+          </div>
+          <div className='form-group'>
+            <input type='text'
+              className='form-control input-lg'
               valueLink={this.linkState('email')}
-              placeholder='Email' />
+              placeholder='Email'
+            />
           </div>
           <div className='form-group'>
             <input type='password'
@@ -43,25 +53,25 @@ export class LoginView extends React.Component {
           <button type='submit'
             className='btn btn-lg'
             disabled={this.props.isAuthenticating}
-            onClick={this.login.bind(this)}
+            onClick={this.register.bind(this)}
           >
             Submit
           </button>
-      </form>
-    </div>
-    );
+        </form>
+      </div>
+    )
   }
 }
 
-reactMixin(LoginView.prototype, React.addons.LinkedStateMixin);
+reactMixin(RegisterView.prototype, React.addons.LinkedStateMixin);
 
 const mapStateToProps = (state) => ({
-  isAuthenticating   : state.auth.isAuthenticating,
-  statusText         : state.auth.statusText
+  isRegistering: state.register.isAuthenticating,
+  statusText: state.register.statusText
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions : bindActionCreators(actionCreators, dispatch)
+  actions: bindActionCreators(actionCreators, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterView);
