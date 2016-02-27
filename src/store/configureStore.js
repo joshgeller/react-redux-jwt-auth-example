@@ -18,7 +18,7 @@ export default function configureStore(initialState) {
      reduxReactRouter({routes, createHistory})
     );
 
-    const store = createStoreWithMiddleware(createStore)(rootReducer, initialState);
+    const store = createStore(rootReducer, initialState, createStoreWithMiddleWare)
 
     if (module.hot) {
         module.hot
