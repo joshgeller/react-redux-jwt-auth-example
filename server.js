@@ -12,6 +12,7 @@ const config = require('./webpack.config');
 const compiler = webpack(config);
 
 const path = require('path');
+const fs = require('fs');
 //Mongo Interface
 const authenticateEmail = require('./src/constants/mongo/authenticateEmail');
 const registerNewUser = require('./src/constants/mongo/registerNewUser');
@@ -53,13 +54,21 @@ app.get('/getData/', (req, res) => {
     if (!token) {
         res.sendStatus(401);
     } else {
+      fs.readFile('src/constants/mongo/secretKey.pem', 'utf-8', (error, secret) => {
+        console.info('Loaded secret key:', secret);
         try {
-            let decoded = jwt.verify(token.replace('Bearer ', ''), 'secret-key');
-            res.status(200)
-                .json({data: 'Valid JWT found! This protected data was fetched from the server.'});
+          if (error) {
+            throw new Error(error);
+          }
+          let decoded = jwt.verify(token.replace('Bearer ', ''), secret);
+          res
+            .status(200)
+            .json({data: 'Valid JWT found! This protected data was fetched from the server.'});
         } catch (e) {
+            console.error('getData ERR:', e);
             res.sendStatus(401);
         }
+      });
     }
 })
 
