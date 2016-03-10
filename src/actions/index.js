@@ -2,6 +2,7 @@ import { checkHttpStatus, parseJSON } from '../utils';
 import {LOGIN_USER_REQUEST, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT_USER, FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA} from '../constants';
 import { pushState } from 'redux-router';
 import jwtDecode from 'jwt-decode';
+import fetch from 'isomorphic-fetch';
 
 export function loginUserSuccess(token) {
   localStorage.setItem('token', token);
