@@ -62,12 +62,10 @@ function signJWTPromise(payload) {
 export default function authenticateEmail(email, password) {
   console.info(`Attempting to authenticate ${email} : ${password}`)
   return new Promise(function(resolve, reject) {
-    connectMongo().then(db => {
-      checkEmailPromise(email, db).then(record => {
-        checkPasswordAgainstRecord(password, record).then(payload => {
-          signJWTPromise(payload).then(resolve, reject)
-        }, reject);
-      }, reject);
-    }, reject);
+    connectMongo()
+      .then(partial(checkEmailPromise, email), reject)
+      .then(partial(checkPasswordAgainstRecord, password), reject)
+      .then(signJWTPromise, reject)
+      .then(resolve, reject)
   });
 }
