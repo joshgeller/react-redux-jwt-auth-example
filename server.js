@@ -1,4 +1,5 @@
 'use strict';
+require('dotenv').load();
 
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
