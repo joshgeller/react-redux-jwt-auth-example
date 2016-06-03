@@ -15,7 +15,8 @@ export default function configureStore(initialState) {
 
     createStoreWithMiddleware = compose(
      middleware,
-     reduxReactRouter({routes, createHistory})
+     reduxReactRouter({routes, createHistory}),
+     window.devToolsExtension ? window.devToolsExtension() : f => f
     );
 
     const store = createStoreWithMiddleware(createStore)(rootReducer, initialState);

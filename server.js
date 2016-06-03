@@ -5,7 +5,8 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-
+const path = require('path');
+const fs = require('fs');
 const app = new(require('express'))();
 const port = 3000;
 
@@ -18,6 +19,7 @@ app.use(webpackDevMiddleware(compiler, {
 }));
 app.use(webpackHotMiddleware(compiler));
 app.use(bodyParser.json());
+
 
 app.post('/auth/getToken/', (req, res) => {
     if (req.body.email == 'hello@test.com' && req.body.password == 'test') {
@@ -43,9 +45,20 @@ app.get('/getData/', (req, res) => {
     }
 })
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/dist/index.html');
+// redirect all the requests not related to the API to the WebPack endpoint
+app.use('*', function (req, res, next) {
+  var filename = path.join(compiler.outputPath,'index.html');
+  compiler.outputFileSystem.readFile(filename, function(err, result){
+    if (err) {
+      return next(err);
+    }
+    res.set('content-type','text/html');
+    res.send(result);
+    res.end();
+  });
 });
+
+
 
 app.listen(port, (error) => {
     if (error) {
