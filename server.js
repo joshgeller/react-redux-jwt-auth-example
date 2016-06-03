@@ -6,7 +6,6 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const path = require('path');
-const fs = require('fs');
 const app = new(require('express'))();
 const port = 3000;
 
