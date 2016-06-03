@@ -47,7 +47,7 @@ export function logoutAndRedirect() {
 export function loginUser(email, password, redirect="/") {
     return function(dispatch) {
         dispatch(loginUserRequest());
-        return fetch('http://localhost:3000/auth/getToken/', {
+        return fetch('http://'+window.location.hostname+':3000/auth/getToken/', {
             method: 'post',
             credentials: 'include',
             headers: {
@@ -97,7 +97,7 @@ export function fetchProtectedData(token) {
 
     return (dispatch, state) => {
         dispatch(fetchProtectedDataRequest());
-        return fetch('http://localhost:3000/getData/', {
+        return fetch('http://'+window.location.hostname+':3000/getData/', {
                 credentials: 'include',
                 headers: {
                     'Authorization': `Bearer ${token}`
