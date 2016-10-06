@@ -1,3 +1,5 @@
+Note: This example is very out-of-date. It might point you in the right direction, but I plan to re-write it from scratch. I won't be accepting any PRs in the meantime. Sorry about that!
+
 ### Goal
 
 This project is an example of one possible authentication flow using [react](https://github.com/facebook/react), [redux](https://github.com/rackt/redux), [react-router](https://github.com/rackt/react-router), [redux-router](https://github.com/rackt/redux-router), and [JSON web tokens (JWT)](http://jwt.io/). It is based on the implementation of a [higher-order component](https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750)
