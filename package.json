@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "compile": "NODE_ENV=production webpack",
-    "start": "npm run dev",
+    "start": "node ./server.js",
     "dev": "NODE_ENV=development node --harmony bin/webpack-dev-server",
     "mocha": "mocha --recursive --compilers js:babel-core/register",
     "mocha:watch": "npm run mocha -- --watch",
