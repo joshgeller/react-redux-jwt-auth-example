@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "babel": "^5.8.23",
+    "bcrypt": "^0.8.5",
     "body-parser": "^1.14.1",
     "dotenv": "^1.2.0",
     "errorhandler": "^1.4.2",
@@ -32,7 +33,9 @@
     "jsonwebtoken": "^5.4.1",
     "jwt-decode": "^1.4.0",
     "method-override": "^2.3.5",
+    "mongodb": "^2.1.7",
     "nock": "^2.17.0",
+    "partial-any": "0.0.2",
     "react": "^0.14.0",
     "react-bootstrap": "^0.27.3",
     "react-dom": "^0.14.0",
