@@ -18,7 +18,7 @@
   "author": "Josh Geller <joshualgeller@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "babel": "^5.8.23",
+    "babel": "^6.0.0",
     "body-parser": "^1.14.1",
     "dotenv": "^1.2.0",
     "errorhandler": "^1.4.2",
@@ -32,7 +32,7 @@
     "jsonwebtoken": "^5.4.1",
     "jwt-decode": "^1.4.0",
     "method-override": "^2.3.5",
-    "nock": "^2.17.0",
+    "nock": "^8.0.0",
     "react": "^0.14.0",
     "react-addons-linked-state-mixin": "^15.1.0",
     "react-bootstrap": "^0.27.3",
