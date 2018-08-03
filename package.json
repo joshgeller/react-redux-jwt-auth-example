@@ -36,7 +36,7 @@
     "react": "^0.14.0",
     "react-addons-linked-state-mixin": "^15.1.0",
     "react-bootstrap": "^0.27.3",
-    "react-dom": "^0.14.0",
+    "react-dom": "^16.0.1",
     "react-mixin": "^3.0.1",
     "react-redux": "^4.0.0",
     "react-router": "1.0.0-rc1",
